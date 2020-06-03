@@ -15,9 +15,12 @@ echo "已安装软件将跳过安装，不会进行更新操作"
 read -rep "是否开始运行脚本? (y/n): " flag
 
 function install() {
-  echo "开始安装${1}..."
-  yum install -y "$1"
-  echo "${1}安装完成"
+  for name in "$@"
+  do
+    echo "开始安装${name}..."
+    yum install -y "$name"
+    echo "${name}安装完成"
+  done
 }
 
 function softwareExist() {
@@ -55,9 +58,16 @@ if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ]; then
 fi
 
 # 是否安装docker
-for software in "${OPTIONAL_SOFTWARE_LIST[@]}" ; do
-  read -rep "可选操作:是否需要安装docker? (y/n): " flag
+for software in "${OPTIONAL_SOFTWARE_LIST[@]}"; do
+  read -rep "可选操作:是否需要安装${software}? (y/n): " flag
   if ([ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ] && softwareExist "${software}"); then
-    install "${software}"
+    case "${software}" in
+    "docker")
+      install "yum-utils" "device-mapper-persistent-data" "lvm2"
+      yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+      yum makecache fast && install docker-ce
+      ;;
+    *) install "${software}" ;;
+    esac
   fi
 done
