@@ -3,6 +3,11 @@
 jdk_path="/opt/"
 jdk_tar_name=$(find . -maxdepth 1 -type f -name "jdk*.tar.gz")
 
+if ! [ "$jdk_tar_name" ]; then
+    echo "没有找到可用的Java安装包，请将指定的安装包放在同级目录下。安装包名为jdk{version}.tar.gz"
+    exit
+fi
+
 echo "正在提取Java安装包，安装包名为${jdk_tar_name}"
 
 tar -zxf "${jdk_tar_name}" -C ${jdk_path}
