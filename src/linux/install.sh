@@ -50,14 +50,7 @@ for software in "${MUST_SOFTWARE_LIST[@]}"; do
   fi
 done
 
-# 是否关闭防护墙
-read -rep "是否永久关闭防火墙? (y/n): " flag
-
-if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ]; then
-  systemctl stop firewalld && systemctl disable firewalld
-fi
-
-# 是否安装docker
+# 可选软件安装
 for software in "${OPTIONAL_SOFTWARE_LIST[@]}"; do
   read -rep "可选操作:是否需要安装${software}? (y/n): " flag
   if ([ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ] && softwareExist "${software}"); then
@@ -71,3 +64,18 @@ for software in "${OPTIONAL_SOFTWARE_LIST[@]}"; do
     esac
   fi
 done
+
+# 是否关闭防护墙
+read -rep "是否永久关闭防火墙? (y/n): " flag
+
+if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ]; then
+  systemctl stop firewalld && systemctl disable firewalld
+fi
+
+# 关闭selinux
+read -rep "是否永久关闭selinux? (y/n): " flag
+
+if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ]; then
+  sed -i 's/SELINUX=enforcing/SELINUX=disable/g' /etc/selinux/config
+  echo "已设置永久关闭，设置将在重启后生效"
+fi
