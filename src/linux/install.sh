@@ -15,8 +15,7 @@ echo "已安装软件将跳过安装，不会进行更新操作"
 read -rep "是否开始运行脚本? (y/n): " flag
 
 function install() {
-  for name in "$@"
-  do
+  for name in "$@"; do
     echo "开始安装${name}..."
     yum install -y "$name"
     echo "${name}安装完成"
@@ -44,11 +43,11 @@ if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ]; then
   curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo && yum makecache
 fi
 
-for software in "${MUST_SOFTWARE_LIST[@]}"; do
-  if softwareExist "${software}"; then
-    install "${software}"
-  fi
-done
+#for software in "${MUST_SOFTWARE_LIST[@]}"; do
+#  if softwareExist "${software}"; then
+#    install "${software}"
+#  fi
+#done
 
 # 可选软件安装
 for software in "${OPTIONAL_SOFTWARE_LIST[@]}"; do
@@ -59,6 +58,13 @@ for software in "${OPTIONAL_SOFTWARE_LIST[@]}"; do
       install "yum-utils" "device-mapper-persistent-data" "lvm2"
       yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
       yum makecache fast && install docker-ce
+      CONFIG_FILE=/etc/docker/daemon.json
+      if ! [ -e "${CONFIG_FILE}" ]; then
+        mkdir "/etc/docker"
+        touch "${CONFIG_FILE}"
+      fi
+      echo '{"registry-mirrors": ["https://83tnzmjf.mirror.aliyuncs.com"]}' >>"${CONFIG_FILE}"
+      systemctl daemon-reload && systemctl restart docker
       ;;
     *) install "${software}" ;;
     esac
