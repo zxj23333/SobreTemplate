@@ -20,4 +20,25 @@ echo "Java安装目录为${jdk_path}"
 # shellcheck disable=SC2016
 echo "export JAVA_HOME=${jdk_path}" >> /etc/profile && echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/profile
 
-echo "Java环境配置成功，请手动执行source /etc/profile刷新配置"
+echo "Java开发环境配置成功，请手动执行source /etc/profile刷新配置"
+
+read -rep "是否需要安装Maven? (y/n): " flag
+
+# 判断是否运行脚本
+if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "n" ]; then
+  echo "exit"
+  exit
+fi
+
+maven_path="/opt/apache-maven-3.6.3"
+maven_tar_name="${maven_path}.tar.gz"
+
+echo "正在下载maven安装包，安装包为${maven_path}"
+curl -o "${maven_tar_name}" https://mirrors.bfsu.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+
+tar -zxf "${maven_tar_name}" -C "/opt"
+
+echo "export MAVEN_HOME=${maven_path}" >> /etc/profile && echo 'export PATH=$PATH:$MAVEN_HOME/bin' >> /ect/profile
+
+echo "maven环境变量已配置，请手动执行source /etc/profile刷新配置"
+echo "maven安装完成，请前往安装目录中的conf目录下修改setting.xml配置"

@@ -3,9 +3,6 @@
 # 定义必装软件列表
 MUST_SOFTWARE_LIST=("bash-completion" "net-tools.x86_64" "wget" "vim")
 
-# 定义选装软件列表
-OPTIONAL_SOFTWARE_LIST=("docker")
-
 echo "Centos最小安装原型预准备脚本，安装列表如下:"
 for ((i = 0; i < "${#MUST_SOFTWARE_LIST[@]}"; i++)); do
   echo "$((i + 1)). ${MUST_SOFTWARE_LIST[${i}]}"
@@ -43,31 +40,9 @@ if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ]; then
   curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo && yum makecache
 fi
 
-#for software in "${MUST_SOFTWARE_LIST[@]}"; do
-#  if softwareExist "${software}"; then
-#    install "${software}"
-#  fi
-#done
-
-# 可选软件安装
-for software in "${OPTIONAL_SOFTWARE_LIST[@]}"; do
-  read -rep "可选操作:是否需要安装${software}? (y/n): " flag
-  if ([ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "y" ] && softwareExist "${software}"); then
-    case "${software}" in
-    "docker")
-      install "yum-utils" "device-mapper-persistent-data" "lvm2"
-      yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-      yum makecache fast && install docker-ce
-      CONFIG_FILE=/etc/docker/daemon.json
-      if ! [ -e "${CONFIG_FILE}" ]; then
-        mkdir "/etc/docker"
-        touch "${CONFIG_FILE}"
-      fi
-      echo '{"registry-mirrors": ["https://83tnzmjf.mirror.aliyuncs.com"]}' >>"${CONFIG_FILE}"
-      systemctl daemon-reload && systemctl restart docker
-      ;;
-    *) install "${software}" ;;
-    esac
+for software in "${MUST_SOFTWARE_LIST[@]}"; do
+  if softwareExist "${software}"; then
+    install "${software}"
   fi
 done
 
