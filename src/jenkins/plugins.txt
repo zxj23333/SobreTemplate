@@ -1,1 +1,2 @@
 localization-zh-cn:1.0.14
+github-branch-source:1.8
