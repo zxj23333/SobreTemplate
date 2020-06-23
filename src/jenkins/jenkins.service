@@ -1,0 +1,13 @@
+[Unit]
+Description=Jenkins Service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/jdk1.8.0_231/bin/java -jar /opt/jenkins.war --httpPort=8888
+ExecStop=/bin/kill -s QUIT $MAINPID
+Restart=always
+StandOutput=syslog
+
+[Install]
+WantedBy=multi-user.target

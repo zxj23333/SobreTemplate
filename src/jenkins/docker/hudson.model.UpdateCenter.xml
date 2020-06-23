@@ -1,0 +1,9 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<sites>
+    <site>
+        <id>default</id>
+        <url>https://updates.jenkins-zh.cn/update-center.json</url>
+        <!--<url>https://jenkins-zh.gitee.io/update-center-mirror/tsinghua/update-center.json</url>-->
+        <!--<url>https://cdn.jsdelivr.net/gh/jenkins-zh/update-center-mirror/tsinghua/current/update-center.json</url>-->
+    </site>
+</sites>
