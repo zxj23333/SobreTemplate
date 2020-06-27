@@ -2,3 +2,5 @@ localization-zh-cn:1.0.14
 role-strategy:3.0
 credentials-binding:1.23
 git:4.3.0
+blueocean:1.23.2
+workflow-aggregator:2.6
