@@ -16,7 +16,7 @@ ENV MAVEN_HOME /opt/maven
 ENV PATH="${MAVEN_HOME}/bin:${PATH}"
 COPY settings.xml ${MAVEN_HOME}/conf/settings.xml
 
-COPY init-jenkins.sh /usr/local/bin/init-jenkins.sh
+COPY init-jenkins.sh /usr/bin/init-jenkins.sh
 ENTRYPOINT ["init-jenkins.sh"]
 
 # 运行命令示例

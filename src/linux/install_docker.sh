@@ -43,7 +43,7 @@ if [ "$(tr '[:upper:]' '[:lower:]' <<<"${flag:0:1}")" = "n" ]; then
   exit
 fi
 
-read -rep "请输入Docker-Compose的版本号(默认为${DOCKER_COMPOSE_VERSION})" version
+read -rep "请输入Docker-Compose的版本号(默认为${DOCKER_COMPOSE_VERSION}):" version
 
 if [ -n "${version}" ]; then
   DOCKER_COMPOSE_VERSION=version
