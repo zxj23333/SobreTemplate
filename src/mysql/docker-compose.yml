@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mysql:
+    restart: always
+    container_name: testMysql
+    build: .
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/my_secret
+    secrets:
+      - my_secret
+    ports:
+    - "3306:3306"
+    volumes:
+    - "/opt/mysql/data:/var/lib/mysql"
+
+  secrets:
+    my_secret:
+      file: ./my_secret

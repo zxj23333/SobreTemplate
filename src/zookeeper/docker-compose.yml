@@ -1,0 +1,10 @@
+version: '3'
+services:
+  zk:
+    restart: always
+    container_name: testZk
+    build: .
+    ports:
+    - "2181:2181"
+    - "3888:3888"
+    - "8080:8080"
