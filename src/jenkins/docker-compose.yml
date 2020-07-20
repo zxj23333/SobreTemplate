@@ -2,10 +2,11 @@ version: '3'
 services:
   jenkins:
     restart: always
-    container_name: testJenkins
+    container_name: sobre_jenkins
     image: registry.cn-hangzhou.aliyuncs.com/zxj2333/jenkins:latest
     ports:
     - "8080:8080"
     - "5000:5000"
     volumes:
     - "/opt/jenkins/data:/var/jenkins_home"
+    user: root
