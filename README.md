@@ -18,7 +18,12 @@
 同时目前拥有的环境搭建的脚手架有
 
 + Linux常用软件
+  - bash-completion
+  - net-tools.x86_64
+  - wget
+  - vim
 + Java以及Maven安装
 + Docker以及Docker-Compose安装
++ Nginx
 
 > 环境搭建脚本全部位于linux目录
